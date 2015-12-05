@@ -98,9 +98,13 @@
   });
 
   // add #! before urls
-  page({
-    hashbang: true
-  });
+  try {
+    page({
+      hashbang: true
+    });
+  } catch (e) {
+    console.log(e);
+  }
 
   // Grab a reference to our auto-binding template
   // and give it some initial binding values
