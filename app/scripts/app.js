@@ -14,7 +14,7 @@
       skeleton.remove();
 
       console.log('Elements are upgraded!');
-    };
+    }
 
     // 5. Go if the async Import loaded quickly. Otherwise wait for it.
     if (link.import && link.import.readyState === 'complete') {
@@ -39,6 +39,68 @@
     finishLazyLoading();
   }
 
+  // run this when polyfill is needed.
+  window.addEventListener('WebComponentsReady', function(){
+    console.log('web-components-ready');
+  });
+
+
+  // We use Page.js for routing. This is a Micro
+  // client-side router inspired by the Express router
+  // More info: https://visionmedia.github.io/page.js/
+  // Middleware
+
+  var blog = document.querySelector('semafloor-app-page');
+
+  /**
+   * Utility function to listen to an event on a node once.
+   */
+  function once(node, event, fn, args) {
+    var self = this;
+    var listener = function () {
+      fn.apply(self, args);
+      node.removeEventListener(event, listener, false);
+    };
+    node.addEventListener(event, listener, false);
+  }
+
+  /**
+   * Routes
+   */
+  page('/:category/list', function (ctx, next) {
+    console.log(ctx);
+    var category = ctx.params.category;
+
+    function setData() {
+      // if (err) {
+      //   blog.category = category;
+      //   blog.page = 'main';
+      //   return;
+      // }
+
+      blog.category = category;
+      blog.page = category;
+      window.scrollTo(0, 0);
+    }
+
+    // Check if element prototype has not been upgraded yet.
+    if (!blog.upgraded) {
+      once(blog, 'upgraded', setData);
+    }else {
+      setData();
+    }
+
+  });
+
+  page('*', function () {
+    console.log('Cant\'t find: ' + window.location.href + '. Redirected you to Home Page');
+    page.redirect('/profile/list');
+  });
+
+  // add #! before urls
+  page({
+    hashbang: true
+  });
 
   // Grab a reference to our auto-binding template
   // and give it some initial binding values

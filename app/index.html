@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -136,9 +136,11 @@
     </div>
   </div>
 
-  <template is="dom-bind" id="app">
+  <!-- <template is="dom-bind" id="app"> -->
 
-    <semafloor-app-page></semafloor-app-page>
+  <!-- Elements wait on the page and are upgraded when elements.html load. -->
+  <semafloor-app-page></semafloor-app-page>
+
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
     <!--
     <paper-toast id="caching-complete"
@@ -156,8 +158,9 @@
     </platinum-sw-register>
     -->
 
-  </template>
+  <!-- </template> -->
 
+  <script src="/bower_components/page/page.js" charset="utf-8"></script>
   <script src="scripts/app.js"></script>
 </body>
 
